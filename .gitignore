@@ -1,11 +1,9 @@
-# IntelliJ IDEA
-.idea/
+### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 !**/src/img/**/out/
-
-# Eclipse
+### Eclipse ###
 .apt_generated
 .classpath
 .factorypath
@@ -17,20 +15,15 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-# NetBeans
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-# VS Code
+### VS Code ###
 .vscode/
 
-# Mac OS
+### Mac OS ###
 .DS_Store
-
-# KioskPJ specific ignores
-/img/
-/이프로젝트lol.pr/
-/.gitignore
