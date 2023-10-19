@@ -20,6 +20,6 @@ public class Product extends Menu {
 
     @Override
     public String toString() {
-        return super.toString() + " | Price: " + price + "원";
+        return super.toString() + " | Price: ₩ " + price +"|" ;
     }
 }
