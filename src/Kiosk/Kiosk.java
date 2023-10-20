@@ -1,4 +1,5 @@
 package Kiosk;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Scanner;
 
 public class Kiosk {
     private List<Product> products = new ArrayList<>();
-    private Map<Product, Integer> cart = new HashMap<>();
+    private Cart cart = new Cart();
     private Scanner scanner = new Scanner(System.in);
 
     public Kiosk() {
@@ -140,12 +141,13 @@ public class Kiosk {
         scanner.nextLine();
 
         if (choice == 1) {
-            cart.put(product, cart.getOrDefault(product, 0) + 1);
+            cart.addItem(product);
             System.out.println(product.getName() + "을(를) 주문목록에 담았습니다.");
         }
     }
 
     private static int waitingNumber = 1;
+
 
     private void checkout() {
         if (cart.isEmpty()) {
@@ -155,10 +157,11 @@ public class Kiosk {
 
         System.out.println("\n주문목록");
         double total = 0;
-        for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
+        for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
             Product product = entry.getKey();
+
             int quantity = entry.getValue();
-            System.out.println("| " + product.getName()+" | ₩ "+product.getPrice()+ " | " + quantity + " 개 |");
+            System.out.println("| " + product.getName() + " | ₩ " + product.getPrice() + " | " + quantity + " 개 |");
             total += product.getPrice() * quantity;
         }
         System.out.println(" 결제 금액 : ₩ " + total);
