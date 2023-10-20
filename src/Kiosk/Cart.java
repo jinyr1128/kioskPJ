@@ -25,6 +25,17 @@ public class Cart {
     public boolean isEmpty() {
         return items.isEmpty();
     }
+    public void removeOneItem(Product product) {
+        if (items.containsKey(product)) {
+            int currentQuantity = items.get(product);
+            if (currentQuantity > 1) {
+                items.put(product, currentQuantity - 1);
+            } else {
+                items.remove(product);
+            }
+        }
+    }
+
 
     public double getTotal() {
         double total = 0;
