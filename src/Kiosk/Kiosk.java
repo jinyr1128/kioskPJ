@@ -177,7 +177,7 @@ public class Kiosk {
         } else if (product.getCategory().equals("Toast")) {
             showOptions(product, toastOption1,toastOption2);
         } else if (product.getCategory().equals("Dessert")) {
-            showOptions(product, dessertOption1,dessertOption2);
+            showOptions(product, dessertOption1);
         } else if (choice == 2) {
             cart.addItem(product);
             System.out.println(product.getName() + "을(를) 주문목록에 담았습니다.");
