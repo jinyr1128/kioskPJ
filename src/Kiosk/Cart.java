@@ -1,7 +1,7 @@
 package Kiosk;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Cart {
     private Map<Product, Integer> items;
@@ -9,7 +9,6 @@ public class Cart {
     public Cart() {
         this.items = new HashMap<>();
     }
-
     public void addItem(Product product) {
         items.put(product, items.getOrDefault(product, 0) + 1);
     }
