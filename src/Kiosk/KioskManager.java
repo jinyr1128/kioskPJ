@@ -60,15 +60,7 @@ public class KioskManager {
         }
         return false;
     }
-    public void viewRecentCompletedOrders(int count) {
-        System.out.println("\n[ 최근 완료된 주문 ]");
-        int displayedCount = 0;
-        ListIterator<Order> iterator = completedOrders.listIterator(completedOrders.size());
-        while (iterator.hasPrevious() && displayedCount < count) {
-            System.out.println(iterator.previous().getCompletedOrderDetails());
-            displayedCount++;
-        }
-    }
+
     public List<Order> getPendingOrders() {
         return this.pendingOrders;
     }
@@ -87,11 +79,32 @@ public class KioskManager {
             System.out.println(order.getOrderDetails());
         }
     }
-
-    public void viewCompletedOrders() {
-        System.out.println("\n[ 완료 주문 목록 ]");
-        for (Order order : completedOrders) {
-            System.out.println(order.getCompletedOrderDetails());
+    public boolean approvePendingOrder(int orderId) {
+        Iterator<Order> iterator = pendingOrders.iterator();
+        while (iterator.hasNext()) {
+            Order order = iterator.next();
+            if (order.getOrderId() == orderId) {
+                order.setCompletionTime(new Date());
+                completedOrders.add(order);
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+    public void viewRecentCompletedOrders(int count) {
+        System.out.println("\n[ 최근 완료된 주문 ]");
+        int displayedCount = 0;
+        ListIterator<Order> iterator = completedOrders.listIterator(completedOrders.size());
+        while (iterator.hasPrevious() && displayedCount < count) {
+            Order order = iterator.previous();
+            System.out.println("대기번호: " + order.getOrderId());
+            System.out.print("상품목록: ");
+            for (Product product : order.getProducts()) {
+                System.out.print(product.getName() + ", ");
+            }
+            System.out.println("\n---------------------");
+            displayedCount++;
         }
     }
 }
