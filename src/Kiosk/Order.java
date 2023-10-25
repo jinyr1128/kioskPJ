@@ -62,18 +62,38 @@ public class Order {
         return total;
     }
 
-    public String getOrderDetails() {
-        StringBuilder details = new StringBuilder();
-        details.append("Order ID: ").append(orderId).append("\n");
-        for (Product product : products) {
-            details.append(product.getName()).append("\n");
-        }
-        details.append("Request: ").append(request).append("\n");
-        details.append("Order Time: ").append(formattedOrderTime()).append("\n");
-        return details.toString();
+    public int getWaitingNumber() {
+        return this.orderId;
     }
 
+    public String getProductListAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Product product : this.products) {
+            sb.append(product.getName()).append(", ");
+        }
+        // 마지막 ", " 제거
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
+        }
+        return sb.toString();
+    }
+
+    public String getOrderDetails() {
+        StringBuilder details = new StringBuilder();
+        details.append("대기 번호: ").append(orderId).append("\n");
+        details.append("주문 상품 목록:\n");
+        for (Product product : products) {
+            details.append("- ").append(product.getName()).append("\n");
+        }
+        details.append("주문 총 가격: ₩").append(getTotalPrice()).append("\n");
+        details.append("요청 사항: ").append(request).append("\n");
+        details.append("주문 일시: ").append(formattedOrderTime()).append("\n");
+        return details.toString();
+    }
+    public List<Product> getProducts() {
+        return this.products;
+    }
     public String getCompletedOrderDetails() {
-        return getOrderDetails() + "Completion Time: " + formattedCompletionTime() + "\n";
+        return getOrderDetails() + "완료주문 일시: " + formattedCompletionTime() + "\n";
     }
 }

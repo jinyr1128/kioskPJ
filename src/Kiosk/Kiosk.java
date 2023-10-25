@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 public class Kiosk {
     private List<Product> products = new ArrayList<>();
     private Cart cart = new Cart();
@@ -24,11 +25,16 @@ public class Kiosk {
     private Option dessertOption1 = new Option("커피SET", 3.0);
 
 
-
     public void start() {
         while (true) {
             System.out.println(" ");
             System.out.println("\"YULL's CAFE에 오신 것을 환영합니다!\"");
+            System.out.println("[ 주문 현황 ]");
+            System.out.println(" ");
+            kioskManager.viewRecentCompletedOrders(3);
+            System.out.println(" ");
+            kioskManager.viewPendingOrders();
+            System.out.println(" ");
             System.out.println("아래의 메뉴를 보시고 원하는 번호를 입력해 주세요!!!");
             System.out.println(" ");
             System.out.println("[ MENU ]");
@@ -77,6 +83,7 @@ public class Kiosk {
             }
         }
     }
+
     private void adminMenu() {
         while (true) {
             System.out.println("\n[ 관리자 메뉴 ]");
@@ -92,6 +99,13 @@ public class Kiosk {
             switch (choice) {
                 case 1:
                     viewPendingOrders();
+                    System.out.println("승인할 주문의 대기 번호를 입력하세요: ");
+                    int orderId = scanner.nextInt();
+                    if (kioskManager.approvePendingOrder(orderId)) {
+                        System.out.println("주문이 승인되었습니다.");
+                    } else {
+                        System.out.println("주문 번호를 찾을 수 없습니다.");
+                    }
                     break;
                 case 2:
                     viewCompletedOrders();
@@ -204,10 +218,10 @@ public class Kiosk {
             if (product.getCategory().equals("Coffee")) {
                 showOptions(product, coffeeOption1, coffeeOption2);
             } else if (product.getCategory().equals("Tea")) {
-                showOptions(product, teaOption1,teaOption2);
+                showOptions(product, teaOption1, teaOption2);
             }
         } else if (product.getCategory().equals("Toast")) {
-            showOptions(product, toastOption1,toastOption2);
+            showOptions(product, toastOption1, toastOption2);
         } else if (product.getCategory().equals("Dessert")) {
             showOptions(product, dessertOption1);
         } else if (choice == 2) {
@@ -219,6 +233,7 @@ public class Kiosk {
             System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
         }
     }
+
     private void showOptions(Product product, Option... options) {
         System.out.println("\n[옵션 메뉴]");
         int i = 1;
@@ -251,7 +266,6 @@ public class Kiosk {
         double total = 0;
         for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
             Product product = entry.getKey();
-
             int quantity = entry.getValue();
             System.out.println("| " + product.getName() + " | ₩ " + product.getPrice() + " | " + quantity + " 개 |");
             total += product.getPrice() * quantity;
@@ -267,25 +281,19 @@ public class Kiosk {
 
         switch (choice) {
             case 1:
+                System.out.print("요청사항을 입력해주세요(없으면 없음을 입력해주세요, 20자 제한): ");
+                String requestMessage = scanner.nextLine().substring(0, Math.min(scanner.nextLine().length(), 20));
                 totalSales += total;
                 for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
                     productSales.put(entry.getKey(), productSales.getOrDefault(entry.getKey(), 0) + entry.getValue());
                 }
-
-                System.out.println("결제가 완료되었습니다. 이용해주셔서 감사합니다!");
-                System.out.println("당신의 대기 번호는 " + waitingNumber + "번입니다.");
-                waitingNumber++;
-                cart.clear();
-
-
-                for (int i = 3; i > 0; i--) {
-                    System.out.println(i + "초 후 메인 메뉴로 돌아갑니다");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                Order newOrder = new Order(requestMessage); // 주문 생성
+                for (Product product : cart.getItems().keySet()) {
+                    newOrder.addProduct(product);
                 }
+                kioskManager.addPendingOrder(newOrder);  // 주문을 대기 목록에 추가
+                System.out.println("결제가 완료되었습니다. 이용해주셔서 감사합니다!");
+                cart.clear();
                 break;
             case 2:
                 break;
@@ -298,6 +306,7 @@ public class Kiosk {
                 break;
         }
     }
+
     private void removeItemCart() {
         System.out.println("\n주문 목록");
         List<Product> cartProducts = new ArrayList<>(cart.getItems().keySet());
@@ -314,7 +323,6 @@ public class Kiosk {
             cart.removeOneItem(selectedProduct);
         }
     }
-
 
     private void exitMenu() {
         System.out.println("주문을 취소하시겠습니까? 진짜로 그냥 가는거에요???");
@@ -337,5 +345,6 @@ public class Kiosk {
     public static void main(String[] args) {
         Kiosk kiosk = new Kiosk();
         kiosk.start();
+
     }
 }
