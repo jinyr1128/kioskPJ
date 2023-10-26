@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class Kiosk {
     private List<Product> products = new ArrayList<>();
