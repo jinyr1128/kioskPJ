@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
+// 키오스크 시스템의 주 클래스
 public class Kiosk {
     private List<Product> products = new ArrayList<>();
-    private Cart cart = new Cart();
-    private Scanner scanner = new Scanner(System.in);
-    private double totalSales = 0;
-    private Map<Product, Integer> productSales = new HashMap<>();
+    private Cart cart = new Cart();// 장바구니 객체
+    private Scanner scanner = new Scanner(System.in);// 사용자 입력을 받기 위한 스캐너
+    private double totalSales = 0;// 총 판매 금액
+    private Map<Product, Integer> productSales = new HashMap<>();// 상품 판매량 관리 맵
 
-    private KioskManager kioskManager = new KioskManager();
+    private KioskManager kioskManager = new KioskManager();// 키오스크 관리자 객체
+    // 상품별 선택 가능한 옵션들
     private Option coffeeOption1 = new Option("아이스", 0.5);
     private Option coffeeOption2 = new Option("샷추가", 0.5);
     private Option teaOption1 = new Option("아이스", 0.5);
@@ -23,9 +24,11 @@ public class Kiosk {
     private Option toastOption2 = new Option("치즈추가", 0.8);
     private Option dessertOption1 = new Option("커피SET", 3.0);
 
+// 키오스크를 시작하는 메서드
 
     public void start() {
         while (true) {
+            // 사용자에게 메뉴를 보여주고, 선택을 받는 부분
             System.out.println(" ");
             System.out.println("\"YULL's CAFE에 오신 것을 환영합니다!\"");
             System.out.println("[ 주문 현황 ]");
@@ -51,7 +54,7 @@ public class Kiosk {
             System.out.print("옵션을 선택해주세요: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
-
+// 사용자의 선택에 따른 처리를 하는 switch-case 문
             switch (choice) {
                 case 0:
                     showTotalSales();
@@ -82,7 +85,7 @@ public class Kiosk {
             }
         }
     }
-
+    // 관리자 메뉴를 보여주는 메서드
     private void adminMenu() {
         while (true) {
             System.out.println("\n[ 관리자 메뉴 ]");
@@ -253,7 +256,7 @@ public class Kiosk {
     }
 
     private static int waitingNumber = 1;
-
+    //장바구니의 역할을 하는 메서드
 
     private void checkout() {
         if (cart.isEmpty()) {
@@ -305,7 +308,7 @@ public class Kiosk {
                 break;
         }
     }
-
+    //하나만 삭제하는 메서드
     private void removeItemCart() {
         System.out.println("\n주문 목록");
         List<Product> cartProducts = new ArrayList<>(cart.getItems().keySet());
@@ -322,7 +325,7 @@ public class Kiosk {
             cart.removeOneItem(selectedProduct);
         }
     }
-
+    //메뉴 종료
     private void exitMenu() {
         System.out.println("주문을 취소하시겠습니까? 진짜로 그냥 가는거에요???");
         System.out.println("1. 당차게 종료하기");
@@ -340,7 +343,7 @@ public class Kiosk {
             System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
         }
     }
-
+    // 메인 메서드
     public static void main(String[] args) {
         Kiosk kiosk = new Kiosk();
         kiosk.start();
